@@ -1,0 +1,24 @@
+{
+  "name": "ufjf-automato-3d",
+  "version": "1.0.0",
+  "description": "Trabalho da disciplina dcc063, renderizar em 3d um automato a partir de um arquivo de descricao",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "parcel index.html",
+    "prebuild-dev": "shx rm -rf dist/*",
+    "build-dev": "parcel build index.html --no-minify --public-url ./",
+    "prebuild": "shx rm -rf dist/*",
+    "build": "parcel build index.html --public-url ./",
+    "push-gh-pages": "push-dir --dir=dist --branch=gh-pages --cleanup --verbose"
+  },
+  "author": "Larissa Lima, Paulo Rozatto",
+  "license": "GPL-3.0-or-later",
+  "devDependencies": {
+    "cssnano": "^6.0.0",
+    "postcss": "^8.4.21",
+    "shx": "^0.3.4"
+  },
+  "dependencies": {
+    "three": "^0.151.3"
+  }
+}
