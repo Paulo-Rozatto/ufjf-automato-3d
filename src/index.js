@@ -30,8 +30,8 @@ for (let i = 0; i < 5; i++) {
 	estado.edges = [edge1, edge2];
 	// estado.position.x = 5 * (-2 + i);
 	// estado.position.y = y;
-	estado.position.x = Math.random() * 15 - 7.5;
-	estado.position.y = Math.random() * 15 - 7.5;
+	estado.position.x = Math.random() * 20 - 10;
+	estado.position.y = Math.random() * 20 - 10;
 
 	scene.add(estado);
 	states.push(estado);
@@ -47,7 +47,7 @@ addEventListener('keydown', (e) => {
 })
 
 let lines = [];
-const lineMaterial = new LineBasicMaterial({ color: 0x0000ff, linewidth: 10 });
+const lineMaterial = new LineBasicMaterial({ color: 0x0000ff, linewidth: 2 });
 createLines();
 function createLines() {
 	for (const vertex of states) {
