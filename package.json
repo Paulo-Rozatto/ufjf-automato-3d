@@ -20,8 +20,10 @@
     "shx": "^0.3.4"
   },
   "dependencies": {
+    "3d-force-graph": "^1.71.3",
     "bootstrap": "^5.2.3",
     "bootstrap-icons": "^1.10.4",
-    "three": "^0.151.3"
+    "three": "^0.151.3",
+    "three-spritetext": "^1.8.0"
   }
 }

@@ -1,89 +1,57 @@
-import { BufferGeometry, CatmullRomCurve3, Line, Line3, LineBasicMaterial, LineCurve3, PerspectiveCamera, Scene, TubeGeometry, WebGLRenderer } from "three";
-import { buildState } from "./components";
-import { spring_eades } from "./drawing";
+import ForceGraph3D from '3d-force-graph';
+import SpriteText from 'three-spritetext';
+import { CSS2DObject, CSS2DRenderer } from 'three/examples/jsm/renderers/CSS2DRenderer.js'
 
-// init
-const camera = new PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 100);
-camera.position.z = 20;
-
-const scene = new Scene();
-
-const renderer = new WebGLRenderer({ antialias: true });
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setAnimationLoop(animation);
-document.querySelector("#render").appendChild(renderer.domElement);
-
-const states = [];
-let y = 2;
-for (let i = 0; i < 5; i++) {
-	const estado = buildState();
-	let edge1 = i + 1, edge2 = i + 2;
-	y *= -1;
-
-	if (edge1 > 4) {
-		edge1 -= 5;
-	}
-	if (edge2 > 4) {
-		edge2 -= 5;
-	}
-
-	estado.edges = [edge1, edge2];
-	// estado.position.x = 5 * (-2 + i);
-	// estado.position.y = y;
-	estado.position.x = Math.random() * 20 - 10;
-	estado.position.y = Math.random() * 20 - 10;
-
-	scene.add(estado);
-	states.push(estado);
+function deg2rad(degrees) {
+	return degrees * Math.PI / 180
 }
 
-// spring_eades(states);
-addEventListener('keydown', (e) => {
-	if (e.key == 'Enter') {
-		removeLines();
-		spring_eades(states);
-		createLines();
-	}
+const gData = {
+	nodes: [...Array(5).keys()].map(i => ({ id: i, name: `q${i + 1}` })),
+	links: [
+		{ source: 0, target: 1, curvature: 0.5, rotation: 30, label: 'a' },
+		{ source: 0, target: 1, curvature: 0.5, rotation: 210, label: 'b' },
+		{ source: 1, target: 1, curvature: 0.5, rotation: 190, label: 'a' },
+		{ source: 1, target: 2, curvature: 0.5, rotation: 0, label: 'b' },
+		{ source: 1, target: 3, curvature: 0.5, rotation: 0, label: 'a' },
+		{ source: 2, target: 3, curvature: 0, rotation: 0, label: 'a' },
+		{ source: 2, target: 4, curvature: 0, rotation: 0, label: 'b' },
+		{ source: 3, target: 4, curvature: 0, rotation: 0, label: 'a' },
+	]
+};
+gData.links = gData.links.map(link => {
+	link.rotation = deg2rad(link.rotation);
+	return link;
 })
 
-let lines = [];
-const lineMaterial = new LineBasicMaterial({ color: 0x0000ff, linewidth: 2 });
-createLines();
-function createLines() {
-	for (const vertex of states) {
-		for (const vertexIdx of vertex.edges) {
-			const destiny = states[vertexIdx];
-			const curve = new CatmullRomCurve3([
-				vertex.position,
-				destiny.position
-			]);
+const Graph = ForceGraph3D({
+	extraRenderers: [new CSS2DRenderer()]
+})
+	(document.getElementById('render'))
+	.linkCurvature('curvature')
+	.linkCurveRotation('rotation')
+	.linkDirectionalParticles(2)
+	.graphData(gData)
+	.nodeThreeObject(node => {
+		const nodeEl = document.createElement('div');
+		nodeEl.textContent = node.name;
+		nodeEl.className = 'node-label';
+		return new CSS2DObject(nodeEl);
+	})
+	.nodeThreeObjectExtend(true)
+	.linkThreeObjectExtend(true)
+	.linkThreeObject(link => {
+		// extend link with text sprite
+		const sprite = new SpriteText(link.label);
+		sprite.color = 'lightgrey';
+		sprite.textHeight = 1.5;
+		return sprite;
+	})
+	.linkPositionUpdate((sprite, { start, end }) => {
+		const middlePos = Object.assign(...['x', 'y', 'z'].map(c => ({
+			[c]: start[c] + (end[c] - start[c]) / 2 // calc middle point
+		})));
 
-			const points = curve.getPoints(50);
-			const geometry = new BufferGeometry().setFromPoints(points);
-			const curveObject = new Line(geometry, lineMaterial);
-			lines.push(curveObject);
-			scene.add(curveObject);
-		}
-	}
-}
-
-function removeLines() {
-	for (const line of lines) {
-		line.geometry.dispose();
-		line.removeFromParent();
-	}
-	lines.length = 0;
-}
-
-// animation
-
-function animation(time) {
-
-	for (let mesh of states) {
-		mesh.rotation.x = time / 2000;
-		mesh.rotation.y = time / 1000;
-	}
-
-	renderer.render(scene, camera);
-
-}
+		// Position sprite
+		Object.assign(sprite.position, middlePos);
+	});
