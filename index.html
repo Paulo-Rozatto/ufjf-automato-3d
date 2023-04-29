@@ -19,8 +19,12 @@
             <div class="fs-4">Configurações</div>
             <form id="form">
                 <div class="mb-3">
-                    <label for="inpUrl" class="form-label">URL da API</label>
+                    <label for="inpUrl" class="form-label">URL websocket</label>
                     <input id="inpUrl" class="form-control" type="text">
+                </div>
+                <div class="mb-3">
+                    <label for="inpSub" class="form-label">Subscription</label>
+                    <input id="inpSub" class="form-control" type="text">
                 </div>
                 <button type="submit" class="btn btn-primary">Atualizar</button>
             </form>
@@ -29,7 +33,6 @@
     <main>
         <section id="render"></section>
     </main>
-    <script src="src/menu.js"></script>
     <script src="src/index.js"></script>
 </body>
 
