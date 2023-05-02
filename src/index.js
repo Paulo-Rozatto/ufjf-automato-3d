@@ -17,10 +17,10 @@ function updateGraph(json) {
 function connect(url, sub) {
 	Socket.disconnect()
 	Socket.connect(url, sub, updateGraph)
+}
 
-	setTimeout(() => {
-		Socket.send("/app/sample", {name: "example1"});
-	},2000)
+function update() {
+	Socket.send("/app/sample", {name: "example1"});
 }
 
 const Graph = ForceGraph3D({
@@ -66,5 +66,4 @@ Graph.linkCurvature('curvature')
 		Object.assign(sprite.position, middlePos);
 	});
 
-MenuHandler(connect);
-connect(undefined, undefined);
+MenuHandler(connect, update);
