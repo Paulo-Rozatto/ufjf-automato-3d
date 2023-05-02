@@ -1,7 +1,7 @@
 const DEFAULT_URL = "http://localhost:8080/automata-websocket"
 const DEFAULT_SUB = "/data/sample"
 
-export const MenuHandler = (onSubmit) => {
+export const MenuHandler = (onSubmit, onUpdate) => {
     const menu = document.querySelector("#menu");
     const btnMenu = document.querySelector("#btnMenu");
     const inpUrl = document.querySelector("#inpUrl");
@@ -15,6 +15,7 @@ export const MenuHandler = (onSubmit) => {
         menu.classList.toggle("d-none");
     }
 
+
     form.onsubmit = (event) => {
         event.preventDefault();
         if (onSubmit instanceof Function) {
@@ -23,4 +24,7 @@ export const MenuHandler = (onSubmit) => {
             onSubmit(url, sub);
         }
     }
+
+    const btnSend = document.querySelector("#btnSend");
+    btnSend.onclick = onUpdate;
 }
