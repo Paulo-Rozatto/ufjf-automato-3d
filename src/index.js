@@ -4,6 +4,11 @@ import { CSS2DObject, CSS2DRenderer } from 'three/examples/jsm/renderers/CSS2DRe
 import * as Socket from './socket-connection.js'
 import { MenuHandler } from './menu.js';
 
+const COLORS = {
+	INITIAL: 0x00ff00,
+	FINAL: 0xff0000,
+}
+
 function deg2rad(degrees) {
 	return degrees * Math.PI / 180
 }
@@ -37,6 +42,8 @@ const demoGraph = {
 	]
 };
 demoGraph.links = demoGraph.links.map(link => ({...link, rotation: deg2rad(link.rotation)}));
+demoGraph.nodes[0].color = COLORS.INITIAL;
+demoGraph.nodes[2].color = COLORS.FINAL;
 
 Graph.linkCurvature('curvature')
 	.linkCurveRotation('rotation')

@@ -2,7 +2,7 @@
 @import "bootstrap-icons/font/bootstrap-icons";
 
 * {
-   margin: 0; 
+   margin: 0;
    padding: 0;
    overflow: hidden;
 }
@@ -13,9 +13,40 @@ header {
 }
 
 .node-label {
-  font-size: 12px;
-  padding: 1px 4px;
-  border-radius: 4px;
-  background-color: none;
-  user-select: none;
+   font-size: 12px;
+   padding: 1px 4px;
+   border-radius: 4px;
+   background-color: none;
+   user-select: none;
+}
+
+.dot {
+   height: 0.75em;
+   width: 0.75em;
+   background-color: #bbb;
+   border-radius: 50%;
+   display: inline-block;
+}
+
+.dot.red {
+   background-color: red;
+}
+
+.dot.green {
+   background-color: green;
+}
+
+#legend {
+   position: absolute;
+   bottom: 0;
+   left: 0;
+   z-index: 1;
+   padding: 10px;
+   color: whitesmoke;
+   background-color: #ffffff54;
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+   align-items: center;
+   gap: 15px;
 }
